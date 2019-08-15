@@ -228,7 +228,7 @@ int main(int argc, const char **argv)
 	memcpy(&sceebootpbp_file->magic, "NPUMDSIG", 0x8);
 	sceebootpbp_file->type = 2;
 	sceebootpbp_file->key_type = 1;
-	sceebootpbp_file->aid = strtoll(argv[1], NULL, 0x10);
+	sceebootpbp_file->aid = __builtin_bswap64(strtoull(argv[1], NULL, 0x10));
 	
 	printf("AID set to: %llx\n", sceebootpbp_file->aid);
 	
