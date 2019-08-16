@@ -25,12 +25,12 @@ typedef struct sce_ebootpbp {
 	uint64_t magic;
 	uint32_t key_type;// set to 1 (maybe keytype?)
 	uint32_t type;// 03 - ps1,  02 - psp
-	char np_title[0x30];
+	uint8_t np_title[0x30];
 	uint64_t aid;
 	uint64_t secure_tick;
 	uint64_t filesz;
 	uint64_t sw_ver;
-	char padding[0xf8];
+	uint8_t padding[0xf8];
 	ECDSA_SIG_0x1c ebootpbp_hdr_sig;
 	ECDSA_SIG_0x1c NPUMDIMG_sig; 
 	ECDSA_SIG_0x1c sceebootpbp_sig;
@@ -243,7 +243,7 @@ int main(int argc, const char **argv)
 	fseek(fin, 0, SEEK_SET);
 	fread(work_buf, hdr.icon0_offset, 1,fin);
 	
-	char work_hash[0x1c]; 
+	uint8_t work_hash[0x1c]; 
 	SHA256_CTX sha256_ctx;
 	SHA224_Init(&sha256_ctx);
 	SHA224_Update(&sha256_ctx, work_buf, hdr.icon0_offset);
@@ -252,11 +252,12 @@ int main(int argc, const char **argv)
 	
 	SHA224_Init(&sha256_ctx);	
 	fseek(fin, hdr.data_psar_offset, SEEK_SET);
-	
+
 	size_t size = PSAR_SZ;
 	int to_read = size > WORK_BUF_SZ ? WORK_BUF_SZ : size;
-	fread(work_buf, to_read, 1,fin);
 	
+	
+	fread(work_buf, to_read, 1,fin);
 	if(memcmp(work_buf, "NPUMDIMG", 0x8) == 0)
 		memcpy(&sceebootpbp_file->np_title, work_buf + 0x10, sizeof(sceebootpbp_file->np_title));
 	else {
