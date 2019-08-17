@@ -176,7 +176,7 @@ int f00d_KIRK0x22(const uint8_t *hash, ECDSA_SIG_0x1c *signature, int key_sel) {
 	BN_bn2bin(sig_r, &signature->r);
 	BN_bn2bin(sig_s, &signature->s);
 	ECDSA_SIG_free(sig);
-	BN_free(sig_s);
+	//BN_free(sig_s);
 	ret = 1;
 	
 error:
