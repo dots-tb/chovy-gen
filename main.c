@@ -209,7 +209,7 @@ static void usage(char *argv[])
 int main(int argc, const char **argv)
 {
 
-
+	int ret  = 1;
 	FILE *fin = 0, *fout = 0;
 	if (argc != 3) {
 		usage(argv);
@@ -289,7 +289,8 @@ int main(int argc, const char **argv)
 	}
 	fwrite(sceebootpbp_file,  1, sizeof(sce_ebootpbp), fout);
 	printf("Written to: __sce_ebootpbp\n");
-
+	
+	ret = 0;
 error:
 	if (fin)
 		fclose(fin);
@@ -298,5 +299,5 @@ error:
 	free(work_buf);
 	free(sceebootpbp_file);
 	exit(0);
-	return 0;
+	return ret;
 }
